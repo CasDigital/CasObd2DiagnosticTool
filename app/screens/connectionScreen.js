@@ -15,6 +15,11 @@ import ActionButton from 'react-native-action-button';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
+    static navigationOptions = {
+        drawerLabel: 'Connection Screen',
+      
+      };
+
     render() {
 //need to figure out a way to postition the button
       return (

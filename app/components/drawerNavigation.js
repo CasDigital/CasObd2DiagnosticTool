@@ -8,7 +8,7 @@ import { StyleSheet,
 
 import { StackNavigator } from 'react-navigation';
 import { DrawerNavigator } from "react-navigation";
-import {MainScreenNavigator} from './tabNavigator'
+//import {MainScreenNavigator} from './tabNavigator'
 
 
 class MyHomeScreen extends Component {

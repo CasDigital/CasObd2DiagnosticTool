@@ -27,6 +27,11 @@ var myDisplay = '';
 
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
+  static navigationOptions = {
+    drawerLabel: 'Main Screen',
+  
+  };
+
     constructor(props) {
         super(props);
 
