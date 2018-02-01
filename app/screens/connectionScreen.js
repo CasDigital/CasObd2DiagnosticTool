@@ -12,6 +12,7 @@ import {
 
 //import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
+import ProgressCircle from 'react-native-progress-circle';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
@@ -29,13 +30,23 @@ export default class  topSheet extends Component {
                     height: 300},
                     imageStyles.imagePosition,
                     panelStyles.color]}>
-          
-                  <Text style={textStyles.headingfont}>PROCESSING</Text>
+
+                    <ProgressCircle
+                        percent={100}
+                        radius={40}
+                        borderWidth={8}
+                        color="#fff"
+                        shadowColor="#009688"
+                        bgColor="#009688">
+                        <Text style={{color: '#fff', fontSize: 20 }}>{'100%'}</Text>
+                    </ProgressCircle>
+
+                    <Text style={textStyles.headingfont}>CONNECTING</Text>
             </View>
 
             <View style={[{backgroundColor: '#f3f3f3'},
                     {flexDirection: 'row', 
-                    height: 300},
+                    height: 200},
                     imageStyles.imagePosition,
                     ]}>
             <View style={{
@@ -43,13 +54,17 @@ export default class  topSheet extends Component {
                   flexDirection: 'column',
                   justifyContent: 'space-around',
                   }}>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>Establishing Connection</Text>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>Seeking Events Module</Text>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>Downloading Events</Text>
+                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>WiFi Connection</Text>
+                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>Panda Connection</Text>
+                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>ECU Connection</Text>
             </View>
       
             </View>
 
+            <ActionButton buttonColor={'rgba(231,76,60,1)'} title = "Continue" onPress={() => this.props.navigation.navigate('MainScreen')}>
+     
+             
+            </ActionButton>
 
         </View>
       );
@@ -129,7 +144,7 @@ const actionButtonStyle = {
 const textStyles = {
     
     headingfont: {
-        fontSize: 30,
+        fontSize: 20,
         color: 'white',
       },
     

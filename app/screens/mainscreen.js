@@ -39,7 +39,7 @@ export default class  mainscreen extends Component {
           rpm: '0rpm',
           speed:'Okm/h',
           wifiStatus: '_',
-          wifiSelectedDeviceAddress:'',
+  
           obdStatus: 'disconnected',
           obd2Data :{}
         };
@@ -51,9 +51,9 @@ export default class  mainscreen extends Component {
         console.log("I am in");
         wifi.findAndConnect("panda-c5b2b17b574deef8", "QgMiWkvPsj", (found) => {
             if (found) {
-              console.log("wifi is in range");
+              console.log("in-range");
             } else {
-              console.log("wifi is not in range");
+              console.log("off-range");
             }
           });
     }
@@ -61,9 +61,9 @@ export default class  mainscreen extends Component {
     connectReview(){
         wifi.connectionStatus((isConnected) => {
             if (isConnected) {
-                console.log("is connected");
+                console.log("connected");
               } else {
-                console.log("is not connected");
+                console.log("disconnected");
             }
           });
     }
