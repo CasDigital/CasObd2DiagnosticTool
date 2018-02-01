@@ -44,13 +44,11 @@ export default class  StartUpScreen extends Component {
 
 
         <ActionButton buttonColor={'rgba(231,76,60,1)'}>
-            <ActionButton.Item buttonColor='#00bfa5' title="Connect" onPress={() => console.log("notes tapped!")}>
-                 <Image  source={require('./online.png')} style = {[imageStyles.inconImageSize]}/>
+     
+            <ActionButton.Item buttonColor='grey' title="Connect" onPress={() => this.props.navigation.navigate('ConnectionScreen')}>
+                <Image  source={require('./online.png')} style = {[imageStyles.inconImageSize]}/>
             </ActionButton.Item>
-            
-            <ActionButton.Item buttonColor='grey' title="Offline" onPress={}>
-                <Image  source={require('./offline.png')} style = {[imageStyles.inconImageSize]}/>
-            </ActionButton.Item>
+
         </ActionButton>
 
         </View>
@@ -62,7 +60,7 @@ export default class  StartUpScreen extends Component {
 //Styling for topsheet
 const panelStyles = {
  color: {
-         backgroundColor: '#0091ea'
+         backgroundColor: '#009688'
     },
 
  flex: {

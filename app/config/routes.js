@@ -3,19 +3,19 @@ import {StackNavigator} from 'react-navigation'
 import startUpScreen from '../screens/startUpScreen'
 import mainScreen from '../screens/mainScreen'
 import connectionScreen from  '../screens/connectionScreen'
-import mainscreen from '../screens/mainScreen';
 
 
 
 //need to create the stack navigator to be added on the drawer navigator. 
 
 
-//Ensure that all the navigation routes are structured to be reconfigurable 
-export default myNavigator = DrawerNavigator({
+//This code is for implementation on apple devices
+/* 
+export default myNavigator = StackNavigator({
    
     startUpScreen: {
       screen: startUpScreen,
-
+    
       navigationOptions: {
       
         initialRoute: true,        
@@ -24,25 +24,48 @@ export default myNavigator = DrawerNavigator({
   
       },
 
+
     },
 
     ConnectionScreen: {
       screen: connectionScreen,
 
+   
       navigationOptions: {
-        drawerLabel: 'Connection Screen',
+        drawerLabel: 'ConnectionScreen',
       },
     },
     
     MainScreen: {
-        screen: mainscreen,
+        screen: mainScreen,
 
+   
         navigationOptions: {
-          drawerLabel: 'Main Screen',
+          drawerLabel: 'MainScreen',
         },
       },
 
-  });
+
+  }); */
+
+//This code is for implementation on Android devices
+export default myNavigator = StackNavigator(
+    {
+    startUpScreen: { screen: startUpScreen},
+
+    ConnectionScreen: {screen: connectionScreen},
+    
+    MainScreen: {screen: mainScreen}
+
+    },
+    {
+          headerMode: 'none',
+          mode: 'modal',
+          navigationOptions: {
+           gesturesEnabled: false,
+             },
+             
+    });
 
 //Only one drawer navigation is needed per application
   

@@ -15,11 +15,11 @@ import ActionButton from 'react-native-action-button';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
-    static navigationOptions = {
+    /*static navigationOptions = {
         drawerLabel: 'Connection Screen',
       
       };
-
+*/
     render() {
 //need to figure out a way to postition the button
       return (
@@ -62,7 +62,7 @@ export default class  topSheet extends Component {
 //Ensure that all the styling for this is managed from the main application. 
 const panelStyles = {
  color: {
-         backgroundColor: '#0091ea'
+         backgroundColor: '#009688'
     },
 
  flex: {

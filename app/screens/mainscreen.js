@@ -27,10 +27,10 @@ var myDisplay = '';
 
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
-  static navigationOptions = {
+  /*static navigationOptions = {
     drawerLabel: 'Main Screen',
   
-  };
+  }; */
 
     constructor(props) {
         super(props);
@@ -163,7 +163,7 @@ export default class  mainscreen extends Component {
 //Styling for topsheet
 const panelStyles = {
  color: {
-         backgroundColor: '#0091ea'
+         backgroundColor: '#009688'
     },
 
  flex: {
