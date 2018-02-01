@@ -41,10 +41,10 @@ const panelStyles = {
    containerStyle: {
 
        shadowColor: '#A9A9A9',
-       shadowOffset: { width: 0, height: 1 },
+       shadowOffset: { width: 0, height: 2 },
        shadowOpacity: 1,
-       shadowRadius: 1.5,
-       elevation: 10,
+       shadowRadius: 3,
+       elevation: 20,
 
      },
    

@@ -27,10 +27,7 @@ var myDisplay = '';
 
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
-  /*static navigationOptions = {
-    drawerLabel: 'Main Screen',
-  
-  }; */
+
 
     constructor(props) {
         super(props);
@@ -46,79 +43,6 @@ export default class  mainscreen extends Component {
 
       }
 
-  
-    connectToWifi(){
-        console.log("I am in");
-        wifi.findAndConnect("panda-c5b2b17b574deef8", "QgMiWkvPsj", (found) => {
-            if (found) {
-              console.log("in-range");
-            } else {
-              console.log("off-range");
-            }
-          });
-    }
-
-    connectReview(){
-        wifi.connectionStatus((isConnected) => {
-            if (isConnected) {
-                console.log("connected");
-              } else {
-                console.log("disconnected");
-            }
-          });
-    }
-
-    openSocket(){
-
-            client.connect(PORT, HOST, function() {
-            
-                console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-                client.write('010F\r');
-            });
-
-            // Add a 'data' event handler for the client socket
-            // data is what the server sent to this socket
-            client.on('data',function(data) {
-                myDisplay = data.toString();
-                console.log(myDisplay);
-                
-            });  
-            
-            // Add a 'close' event handler for the client socket
-            client.on('close', function() {
-              console.log('Connection closed');
-            });
-
-           
-    }
-
-    sendMsg(){
-      client.write('ATZ\r');
-    }
-
-    //Sending commands to the vehicle
-    loopCommands(value)
-    {
-      switch(value) {
-        case 1 : 
-        client.write('ATZ\r');
-          break;
-        case 2 :
-        client.write('ATDP\r');
-          break;
-        case 3 :
-        client.write('ATSPA0\r');
-          break;
-        case 4 :
-        client.write('010C\r');
-          break;
-        case 5 :
-        client.write('010D\r');
-          break;
-        default :
-          break;
-      }
-    }
 
    
     render() {
@@ -126,35 +50,31 @@ export default class  mainscreen extends Component {
 
       return (
 
+        <View style={{flex:1, backgroundColor: '#f3f3f3'}}>        
+          <View style={[panelStyles.containerStyle,
+                {flexDirection: 'row', 
+                height: 100},
+                imageStyles.imagePosition,
+                panelStyles.color]}>
 
-        <View>
+                <Text style={textStyles.headingfont}>ENGINE PARAMETERS</Text>
+               </View>
 
-        <View style={{flexWrap: 'wrap', flexDirection: 'row',backgroundColor: '#f3f3f3'}}>
+           <View>
 
-          <Button title="revCon" onPress={() => this.connectReview()}/>     
-          <Button title="Conn" onPress={() => this.connectToWifi()}/>
-          <Button title="Socket" onPress={() => this.openSocket()}/>  
-          <Button title="SendMsg" onPress={() => this.sendMsg()}/>  
-          <Button title="IncCom1" onPress={() => this.loopCommands(1)}/>  
-          <Button title="IncCom2" onPress={() => this.loopCommands(2)}/>  
-          <Button title="IncCom3" onPress={() => this.loopCommands(3)}/>  
-          <Button title="IncCom4" onPress={() => this.loopCommands(5)}/>  
-          <Button title="IncCom5" onPress={() => this.loopCommands(5)}/> 
+              <ScrollView>
 
-        </View>
+                  <View style={{flexWrap: 'wrap', height: 500, flexDirection: 'row',backgroundColor: '#f3f3f3'}}> 
+                  
+                          <Card faultCount = '300' systemName = 'Engine Rpm'/>
+                          <Card faultCount = '50' systemName =  'Coolant Temp'/>
+                          <Card faultCount = '70' systemName = 'Intake'/>
+                          <Card faultCount = '70' systemName = 'Engine Load'/>
 
-        <ScrollView>
-
-            <View style={{flexWrap: 'wrap', flexDirection: 'row',backgroundColor: '#f3f3f3'}}> 
-            
-                    <Card faultCount = '300' systemName = 'Engine Rpm'/>
-                    <Card faultCount = '50' systemName =   {this.state.rpm}/>
-                    <Card faultCount = '70' systemName = 'Fuel Level'/>
-
-
+                  </View>
+              </ScrollView>
+      
             </View>
-        </ScrollView>
-    
         </View>
       );
     }
@@ -238,7 +158,7 @@ const actionButtonStyle = {
 const textStyles = {
     
     headingfont: {
-        fontSize: 30,
+        fontSize: 20,
         color: 'white',
       },
 

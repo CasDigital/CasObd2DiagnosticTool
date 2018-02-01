@@ -16,11 +16,100 @@ import ProgressCircle from 'react-native-progress-circle';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
-    /*static navigationOptions = {
-        drawerLabel: 'Connection Screen',
-      
-      };
-*/
+  
+    constructor(props) {
+        super(props);
+
+        this.state = {
+          wifiStatus: '-',
+          ecuStatus:'-',
+          pandaStatus: '_',
+          obd2Data :{}
+        };
+
+      }
+
+      //Review the current wifi status
+    checkWifiStatus(){
+        wifi.connectionStatus((isConnected) => {
+            if (isConnected) {
+                console.log("connected");
+                this.wifiStatus = 'connected';
+              } else {
+                console.log("offline");
+                this.wifiStatus = 'offline';
+            }
+          });
+    }
+
+     //establish connection to wifi
+    connectToWifi(){
+        console.log("I am in");
+        wifi.findAndConnect("panda-c5b2b17b574deef8", "QgMiWkvPsj", (found) => {
+            if (found) {
+              console.log("in-range");
+            } else {
+              console.log("off-range");
+            }
+          });
+    }
+
+
+     //create a new TCP Socket to retrieve a 
+    openSocket(){
+
+            client.connect(PORT, HOST, function() {
+            
+                console.log('CONNECTED TO: ' + HOST + ':' + PORT);
+                client.write('010F\r');
+            });
+
+            // Add a 'data' event handler for the client socket
+            // data is what the server sent to this socket
+            client.on('data',function(data) {
+                myDisplay = data.toString();
+                console.log(myDisplay);
+                
+            });  
+            
+            // Add a 'close' event handler for the client socket
+            client.on('close', function() {
+              console.log('Connection closed');
+            });
+
+           
+    }
+
+    sendMsg(){
+      client.write('ATZ\r');
+    }
+
+    //Sending commands to the vehicle
+    loopCommands(value)
+    {
+      switch(value) {
+        case 1 : 
+        client.write('ATZ\r');
+          break;
+        case 2 :
+        client.write('ATDP\r');
+          break;
+        case 3 :
+        client.write('ATSPA0\r');
+          break;
+        case 4 :
+        client.write('010C\r');
+          break;
+        case 5 :
+        client.write('010D\r');
+          break;
+        default :
+          break;
+      }
+    }
+
+
+
     render() {
 //need to figure out a way to postition the button
       return (
