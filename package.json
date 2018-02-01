@@ -1,0 +1,35 @@
+{
+  "name": "CasObd2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^3.0.5",
+    "@feathersjs/socketio-client": "^1.0.2",
+    "react": "16.2.0",
+    "react-native": "0.52.0",
+    "react-native-android-wifi": "0.0.23",
+    "react-native-tcp": "^3.3.0",
+    "react-native-udp": "^2.3.1",
+    "socket.io-client": "^2.0.4",
+    "stream": "0.0.2",
+    "stream-browserify": "^2.0.1",
+    "telnet-client": "^0.15.5"
+  },
+  "devDependencies": {
+    "babel-jest": "22.1.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.1.4",
+    "react-test-renderer": "16.2.0",
+    "rn-nodeify": "^9.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "browser": {
+    "net": "react-native-tcp"
+  }
+}
