@@ -15,15 +15,14 @@ import {
 
 
 import Card from '../components/Card';
-import wifi from 'react-native-android-wifi';
 import { Socket } from 'react-native-tcp';
 
 //defining public variables
-var net = require('react-native-tcp')
-var HOST = '192.168.0.10';
-var PORT = 35000;
-var client = new net.Socket();
-var myDisplay = '';
+//var net = require('react-native-tcp')
+//var HOST = '192.168.0.10';
+//var PORT = 35000;
+//var client = new net.Socket();
+//var myDisplay = '';
 
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {

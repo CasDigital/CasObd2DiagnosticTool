@@ -4,6 +4,7 @@ import {
     AppRegistry, 
     ListView, 
     Text, 
+    Button,
     View, 
     StyleSheet,
     Image,
@@ -13,6 +14,17 @@ import {
 //import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
 import ProgressCircle from 'react-native-progress-circle';
+
+//import connection library
+import wifi from 'react-native-android-wifi';
+import { Socket } from 'react-native-tcp';
+
+//defining public variables
+var net = require('react-native-tcp')
+var HOST = '192.168.0.10';
+var PORT = 35000;
+var client = new net.Socket();
+var myDisplay = '';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
@@ -26,26 +38,11 @@ export default class  topSheet extends Component {
           pandaStatus: '_',
           obd2Data :{}
         };
-
       }
-
-      //Review the current wifi status
-    checkWifiStatus(){
-        wifi.connectionStatus((isConnected) => {
-            if (isConnected) {
-                console.log("connected");
-                this.wifiStatus = 'connected';
-              } else {
-                console.log("offline");
-                this.wifiStatus = 'offline';
-            }
-          });
-    }
 
      //establish connection to wifi
     connectToWifi(){
-        console.log("I am in");
-        wifi.findAndConnect("panda-c5b2b17b574deef8", "QgMiWkvPsj", (found) => {
+        wifi.findAndConnect("panda-e3a418776fbdf8cb", "jWslKTRRR6", (found) => {
             if (found) {
               console.log("in-range");
             } else {
@@ -61,7 +58,7 @@ export default class  topSheet extends Component {
             client.connect(PORT, HOST, function() {
             
                 console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-                client.write('010F\r');
+                //client.write('010F\r');
             });
 
             // Add a 'data' event handler for the client socket
@@ -74,14 +71,14 @@ export default class  topSheet extends Component {
             
             // Add a 'close' event handler for the client socket
             client.on('close', function() {
-              console.log('Connection closed');
+                console.log('Connection closed');
             });
 
-           
     }
 
+    //Send initiation strinng to the ECU
     sendMsg(){
-      client.write('ATZ\r');
+      client.write('ATZ DP SPAO 010C 010D\r');
     }
 
     //Sending commands to the vehicle
@@ -89,7 +86,7 @@ export default class  topSheet extends Component {
     {
       switch(value) {
         case 1 : 
-        client.write('ATZ\r');
+        client.write('ATZ DP SPAO 010C 010D\r');
           break;
         case 2 :
         client.write('ATDP\r');
@@ -138,21 +135,24 @@ export default class  topSheet extends Component {
                     height: 200},
                     imageStyles.imagePosition,
                     ]}>
+
             <View style={{
-                  flex: 0.6,
+                  flex: 2,
                   flexDirection: 'column',
                   justifyContent: 'space-around',
+                  marginTop: 20
                   }}>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>WiFi Connection</Text>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>Panda Connection</Text>
-                    <Text style={[textStyles.footerfont, {textAlign:'left'}]}>ECU Connection</Text>
+
+                    <Button color =  'grey' title="Establish Connection" onPress={() => this.connectToWifi()}/>
+                    <Button color =  'grey' title="Enable Socket" onPress={() => this.openSocket()}/>  
+                    <Button color =  'grey' title="ECU Connection" onPress={() => this.sendMsg()}/> 
+        
             </View>
       
             </View>
 
             <ActionButton buttonColor={'rgba(231,76,60,1)'} title = "Continue" onPress={() => this.props.navigation.navigate('MainScreen')}>
-     
-             
+       
             </ActionButton>
 
         </View>
@@ -160,7 +160,6 @@ export default class  topSheet extends Component {
     }
   }
 
-// <Icon name="md-create" style={actionButtonStyle.popActionButtonIcon}  />
 
 
 //Ensure that all the styling for this is managed from the main application. 
@@ -258,3 +257,16 @@ const textStyles = {
 
 };
 // style={[btnStyle, this.props.style]}
+
+   /*   //Review the current wifi status
+    checkWifiStatus(){
+        wifi.connectionStatus((isConnected) => {
+            if (isConnected) {
+                console.log("connected");
+                this.wifiStatus = 'connected';
+              } else {
+                console.log("offline");
+                this.wifiStatus = 'offline';
+            }
+          });
+    } */
