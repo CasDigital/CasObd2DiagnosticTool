@@ -75,7 +75,7 @@ const textStyles = {
 
     
     cardNumber: {
-        fontSize: 80,
+        fontSize: 60,
         color: 'black',
       },
        

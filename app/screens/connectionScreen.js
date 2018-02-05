@@ -24,7 +24,6 @@ var net = require('react-native-tcp')
 var HOST = '192.168.0.10';
 var PORT = 35000;
 var client = new net.Socket();
-var myDisplay = '';
 
  //Making sure all that all the data is deployed to the screen. 
 export default class  topSheet extends Component {
@@ -36,7 +35,7 @@ export default class  topSheet extends Component {
           wifiStatus: '-',
           ecuStatus:'-',
           pandaStatus: '_',
-          obd2Data :{}
+          obd2Data :'-'
         };
       }
 
@@ -64,8 +63,8 @@ export default class  topSheet extends Component {
             // Add a 'data' event handler for the client socket
             // data is what the server sent to this socket
             client.on('data',function(data) {
-                myDisplay = data.toString();
-                console.log(myDisplay);
+              this.setState({obd2Data:  data.toString()}); 
+                console.log(this.state.obd2Data);
                 
             });  
             

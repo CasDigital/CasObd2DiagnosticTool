@@ -1,6 +1,6 @@
+import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import initialScreen from './app/config/routes';
-//import mainscreen from './app/screens/mainscreen';
 
 
 const reactNavigationSample = props => {

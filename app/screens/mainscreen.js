@@ -16,14 +16,8 @@ import {
 
 import Card from '../components/Card';
 import { Socket } from 'react-native-tcp';
-
-//defining public variables
-//var net = require('react-native-tcp')
-//var HOST = '192.168.0.10';
-//var PORT = 35000;
-//var client = new net.Socket();
-//var myDisplay = '';
-
+import connections from '../screens/connectionScreen';
+var i = 1;
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
 
@@ -31,18 +25,38 @@ export default class  mainscreen extends Component {
     constructor(props) {
         super(props);
 
+      //configuring the engine parameters for display
         this.state = {
-          rpm: '0rpm',
-          speed:'Okm/h',
-          wifiStatus: '_',
-  
+          rpm: '0',
+          coolantTemp:'O',
+          engineIntake: '0',
+          engineLoad: '0',
+          i: 1,
+          
+          wifiStatus: 'notConnected',
           obdStatus: 'disconnected',
-          obd2Data :{}
+       //   obd2Data :{}
+
         };
+
+ 
 
       }
 
+    setLiveData()
+    {
+      //Seting live vehicle parameters
 
+      this.setState({rpm: this.connections.});
+
+      this.setState({coolantTemp: i++});
+
+      this.setState({engineIntake: i++});
+
+      this.setState({engineLoad: i++});
+      
+      console.log('I was sureley here');
+    }
    
     render() {
 
@@ -56,7 +70,7 @@ export default class  mainscreen extends Component {
                 imageStyles.imagePosition,
                 panelStyles.color]}>
 
-                <Text style={textStyles.headingfont}>ENGINE PARAMETERS</Text>
+                <Text style={textStyles.headingfont}>ENGINE OVERVIEW SCREEN</Text>
                </View>
 
            <View>
@@ -65,10 +79,11 @@ export default class  mainscreen extends Component {
 
                   <View style={{flexWrap: 'wrap', height: 500, flexDirection: 'row',backgroundColor: '#f3f3f3'}}> 
                   
-                          <Card faultCount = '300' systemName = 'Engine Rpm'/>
-                          <Card faultCount = '50' systemName =  'Coolant Temp'/>
-                          <Card faultCount = '70' systemName = 'Intake'/>
-                          <Card faultCount = '70' systemName = 'Engine Load'/>
+                          <Card faultCount = {this.state.rpm} systemName = 'Engine Revs(rpm)'/>
+                          <Card faultCount = {this.state.coolantTemp} systemName =  'Coolant Temp(C)'/>
+                          <Card faultCount = {this.state.engineIntake} systemName = 'Intake (Psi)'/>
+                          <Card faultCount = {this.state.engineLoad} systemName = 'Engine Load (%)'/>
+                          <Button color =  'grey' title="Increast" onPress={() => this.setLiveData()}/>
 
                   </View>
               </ScrollView>
