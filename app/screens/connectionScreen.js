@@ -24,7 +24,7 @@ var net = require('react-native-tcp')
 var HOST = '192.168.0.10';
 var PORT = 35000;
 var client = new net.Socket();
-
+var mydata = '';
  //Making sure all that all the data is deployed to the screen. 
 export default class  Connection extends Component {
   
@@ -62,15 +62,15 @@ export default class  Connection extends Component {
             client.connect(PORT, HOST, function() {
             
                 console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-                //client.write('010F\r');
+                client.write('ATI\r');
             });
 
             // Add a 'data' event handler for the client socket
             // data is what the server sent to this socket
             client.on('data',function(data) {
-              this.setState({obd2Data:  data.toString()}); 
-                console.log(this.state.obd2Data);
-                
+             // this.setState({obd2Data:  data.toString()});
+              mydata = data.toString();
+              console.log(mydata);
             });  
             
             // Add a 'close' event handler for the client socket
@@ -82,7 +82,7 @@ export default class  Connection extends Component {
 
     //Send initiation strinng to the ECU
     sendMsg(){
-      client.write('ATZ DP SPAO 010C 010D\r');
+        client.write('ATZ DP SPAO 010C 010D\r');
     }
 
     //Sending commands to the vehicle
@@ -90,7 +90,7 @@ export default class  Connection extends Component {
     {
       switch(value) {
         case 1 : 
-        client.write('ATZ DP SPAO 010C 010D\r');
+        client.write('ATZ\r');
           break;
         case 2 :
         client.write('ATDP\r');
@@ -107,6 +107,7 @@ export default class  Connection extends Component {
         default :
           break;
       }
+    
     }
 
 
@@ -150,7 +151,12 @@ export default class  Connection extends Component {
                     <Button color =  'grey' title="Establish Connection" onPress={() => this.connectToWifi()}/>
                     <Button color =  'grey' title="Enable Socket" onPress={() => this.openSocket()}/>  
                     <Button color =  'grey' title="ECU Connection" onPress={() => this.sendMsg()}/> 
-        
+                    <Button color =  'grey' title="Crank ECu1" onPress={() => this.loopCommands(1)}/> 
+                    <Button color =  'grey' title="Crank ECu2" onPress={() => this.loopCommands(2)}/> 
+                    <Button color =  'grey' title="Crank ECu3" onPress={() => this.loopCommands(3)}/> 
+                    <Button color =  'grey' title="Crank ECu4" onPress={() => this.loopCommands(4)}/> 
+                    <Button color =  'grey' title="Crank ECu5" onPress={() => this.loopCommands(5)}/> 
+
             </View>
       
             </View>
@@ -164,7 +170,7 @@ export default class  Connection extends Component {
     }
   }
 
-module.exports = {mydata: this.state.obd2Data};
+  export  {mydata};
 
 //Ensure that all the styling for this is managed from the main application. 
 const panelStyles = {
