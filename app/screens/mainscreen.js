@@ -16,7 +16,7 @@ import {
 
 import Card from '../components/Card';
 import { Socket } from 'react-native-tcp';
-import connections from '../screens/connectionScreen';
+import {Connection} from '../screens/connectionScreen';
 var i = 1;
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
@@ -47,7 +47,7 @@ export default class  mainscreen extends Component {
     {
       //Seting live vehicle parameters
 
-      this.setState({rpm: this.connections.});
+      this.setState({rpm: Connection.mydata});
 
       this.setState({coolantTemp: i++});
 

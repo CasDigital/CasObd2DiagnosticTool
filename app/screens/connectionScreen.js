@@ -26,7 +26,7 @@ var PORT = 35000;
 var client = new net.Socket();
 
  //Making sure all that all the data is deployed to the screen. 
-export default class  topSheet extends Component {
+export default class  Connection extends Component {
   
     constructor(props) {
         super(props);
@@ -37,6 +37,11 @@ export default class  topSheet extends Component {
           pandaStatus: '_',
           obd2Data :'-'
         };
+
+        this.connectToWifi = this.connectToWifi.bind(this);
+        this.openSocket = this.openSocket.bind(this);
+        this.sendMsg = this.sendMsg.bind(this);
+        
       }
 
      //establish connection to wifi
@@ -159,7 +164,7 @@ export default class  topSheet extends Component {
     }
   }
 
-
+module.exports = {mydata: this.state.obd2Data};
 
 //Ensure that all the styling for this is managed from the main application. 
 const panelStyles = {
