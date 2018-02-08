@@ -14,6 +14,8 @@ import {
 //import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
 import ProgressCircle from 'react-native-progress-circle';
+import TimerMixin from 'react-timer-mixin';
+
 
 //import connection library
 import wifi from 'react-native-android-wifi';
@@ -25,6 +27,7 @@ var HOST = '192.168.0.10';
 var PORT = 35000;
 var client = new net.Socket();
 var mydata = '';
+var lock = false;
  //Making sure all that all the data is deployed to the screen. 
 export default class  Connection extends Component {
   
@@ -40,9 +43,13 @@ export default class  Connection extends Component {
 
         this.connectToWifi = this.connectToWifi.bind(this);
         this.openSocket = this.openSocket.bind(this);
-        this.sendMsg = this.sendMsg.bind(this);
+
+   
+
         
       }
+
+      
 
      //establish connection to wifi
     connectToWifi(){
@@ -62,28 +69,33 @@ export default class  Connection extends Component {
             client.connect(PORT, HOST, function() {
             
                 console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-                client.write('ATI\r');
+                client.write('ATZ\r');
             });
 
             // Add a 'data' event handler for the client socket
             // data is what the server sent to this socket
             client.on('data',function(data) {
              // this.setState({obd2Data:  data.toString()});
+
               mydata = data.toString();
-              console.log(mydata);
+ 
+            //  console.log(mydata);
+
+
             });  
             
             // Add a 'close' event handler for the client socket
-            client.on('close', function() {
-                console.log('Connection closed');
-            });
-
+        //    client.on('close', function() {
+          //      console.log('Connection closed');
+          //  });
+        
     }
 
-    //Send initiation strinng to the ECU
-    sendMsg(){
-        client.write('ATZ DP SPAO 010C 010D\r');
+    sendMsgHere(){
+        client.write('010C\r')
     }
+
+
 
     //Sending commands to the vehicle
     loopCommands(value)
@@ -91,18 +103,23 @@ export default class  Connection extends Component {
       switch(value) {
         case 1 : 
         client.write('ATZ\r');
+        console.log('ATZ on')
           break;
         case 2 :
         client.write('ATDP\r');
+        console.log('ATDP on')
           break;
         case 3 :
         client.write('ATSPA0\r');
+        console.log('ATSPAO on')
           break;
         case 4 :
         client.write('010C\r');
+        console.log('RPM on')
           break;
         case 5 :
         client.write('010D\r');
+        console.log('SPEED on')
           break;
         default :
           break;
@@ -142,7 +159,7 @@ export default class  Connection extends Component {
                     ]}>
 
             <View style={{
-                  flex: 2,
+                  flex: 1,
                   flexDirection: 'column',
                   justifyContent: 'space-around',
                   marginTop: 20
@@ -150,13 +167,7 @@ export default class  Connection extends Component {
 
                     <Button color =  'grey' title="Establish Connection" onPress={() => this.connectToWifi()}/>
                     <Button color =  'grey' title="Enable Socket" onPress={() => this.openSocket()}/>  
-                    <Button color =  'grey' title="ECU Connection" onPress={() => this.sendMsg()}/> 
-                    <Button color =  'grey' title="Crank ECu1" onPress={() => this.loopCommands(1)}/> 
-                    <Button color =  'grey' title="Crank ECu2" onPress={() => this.loopCommands(2)}/> 
-                    <Button color =  'grey' title="Crank ECu3" onPress={() => this.loopCommands(3)}/> 
-                    <Button color =  'grey' title="Crank ECu4" onPress={() => this.loopCommands(4)}/> 
-                    <Button color =  'grey' title="Crank ECu5" onPress={() => this.loopCommands(5)}/> 
-
+ 
             </View>
       
             </View>
@@ -170,7 +181,7 @@ export default class  Connection extends Component {
     }
   }
 
-  export  {mydata};
+  export  {mydata, client};
 
 //Ensure that all the styling for this is managed from the main application. 
 const panelStyles = {
@@ -266,17 +277,3 @@ const textStyles = {
       }
 
 };
-// style={[btnStyle, this.props.style]}
-
-   /*   //Review the current wifi status
-    checkWifiStatus(){
-        wifi.connectionStatus((isConnected) => {
-            if (isConnected) {
-                console.log("connected");
-                this.wifiStatus = 'connected';
-              } else {
-                console.log("offline");
-                this.wifiStatus = 'offline';
-            }
-          });
-    } */

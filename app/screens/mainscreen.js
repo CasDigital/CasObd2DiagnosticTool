@@ -18,7 +18,7 @@ import Card from '../components/Card';
 import { Socket } from 'react-native-tcp';
 import Connection from '../screens/connectionScreen';
 import {mydata} from '../screens/connectionScreen';
-
+import {client} from '../screens/connectionScreen';
 var i = 1;
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
@@ -37,32 +37,80 @@ export default class  mainscreen extends Component {
           
           wifiStatus: 'notConnected',
           obdStatus: 'disconnected',
-       //   obd2Data :{}
+       //   obd2Data :{}]
+       
 
         };
 
- 
+        this.sendMsg = this.sendMsg.bind(this);
+        this.setLiveData = this.setLiveData.bind(this);
+        //this.sendMsg = this.sendMsg.bind(this);
+        
+
 
       }
+
+      componentDidMount(){
+
+          setInterval(() => { this.sendMsg()}, 1000);
+
+
+      }
+               
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+      
+    //Send initiation strinng to the ECU
+    sendMsg(){
+
+        setTimeout(() => client.write('AT 01 0C 01 17\r'), 1000);
+        //setTimeout(() => client.write('0117\r'), 1000);
+        this.setState({rpm: mydata});
+        console.log(mydata);
+  
+     }
+
+
+     //capture the
+     extractDataFromSignal(){
+
+
+     }
+
+
+     //Conversion from OBDII to extract the decimal variable
+     convertPID(){
+        //
+        
+     }
+
+
+     sendMsg2(){
+      
+      setTimeout(() => client.write('ATI\r'), 3000);
+      console.log(mydata)
+      this.setState({rpm: mydata});
+   }
 
     setLiveData()
     {
       //Seting live vehicle parameters
+        this.setState({rpm: mydata});
 
-      this.setState({rpm: mydata});
+        this.setState({coolantTemp: i++});
+  
+        this.setState({engineIntake: i++});
+  
+        this.setState({engineLoad: i++});
 
-      this.setState({coolantTemp: i++});
-
-      this.setState({engineIntake: i++});
-
-      this.setState({engineLoad: i++});
-      
-      console.log('I was sureley here');
     }
    
     render() {
 
-
+       // refresh signals every second
+    //  setTimeout(() => { this.setState({rpm: mydata})}, 3000);
+      //setTimeout(() => { client.write('010C\r'), console.log(mydata)}, 3000)
       return (
 
         <View style={{flex:1, backgroundColor: '#f3f3f3'}}>        
@@ -82,10 +130,13 @@ export default class  mainscreen extends Component {
                   <View style={{flexWrap: 'wrap', height: 500, flexDirection: 'row',backgroundColor: '#f3f3f3'}}> 
                   
                           <Card faultCount = 'RV'systemName =  {this.state.rpm}/>
-                          <Card faultCount = {this.state.coolantTemp} systemName =  'Coolant Temp(C)'/>
+                          <Card faultCount = {this.state.coolantTemp} systemName =   {this.state.rpm}/>
                           <Card faultCount = {this.state.engineIntake} systemName = 'Intake (Psi)'/>
                           <Card faultCount = {this.state.engineLoad} systemName = 'Engine Load (%)'/>
-                          <Button color =  'grey' title="Increast" onPress={() => this.setLiveData()}/>
+                          <Button color =  'grey' title="Message1" onPress={() => this.sendMsg()}/>
+                          <Button color =  'grey' title="Message2" onPress={() => this.sendMsg2()}/>
+
+
 
                   </View>
               </ScrollView>
@@ -95,7 +146,10 @@ export default class  mainscreen extends Component {
       );
     }
   }
+
+  //<Button color =  'grey' title="Increast" onPress={() => this.setLiveData()}/>
   //<Button title="SendMsg" onPress={() => this.setState({rpm: ':' + myDisplay})}/> 
+
 //Styling for topsheet
 const panelStyles = {
  color: {
