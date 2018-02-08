@@ -45,51 +45,61 @@ export default class  mainscreen extends Component {
         this.sendMsg = this.sendMsg.bind(this);
         this.setLiveData = this.setLiveData.bind(this);
         //this.sendMsg = this.sendMsg.bind(this);
-        
+        this.extractDataFromSignal = this.extractDataFromSignal.bind(this);
 
 
       }
 
       componentDidMount(){
 
-          setInterval(() => { this.sendMsg()}, 1000);
-
-
+          setInterval(() => {this.sendMsg()}, 1000);
       }
                
       componentWillUnmount() {
-        clearInterval(this.interval);
+         clearInterval(this.interval);
       }
       
     //Send initiation strinng to the ECU
     sendMsg(){
 
-        setTimeout(() => client.write('AT 01 0C 01 17\r'), 1000);
-        //setTimeout(() => client.write('0117\r'), 1000);
-        this.setState({rpm: mydata});
-        console.log(mydata);
-  
+       // setTimeout(() => client.write('010C\r'), 1000);
+        client.write('010C\r');
+        console.log('i wrote something');
+        this.setState({rpm: this.extractDataFromSignal(mydata)});        
+     }
+
+     //capture the 
+     extractDataFromSignal(PID){
+          var A = '';
+          var B = '';
+          var Ahex
+          var answer = 0;
+
+          console.log(PID.toString());
+
+          if(PID.charAt(0)=='4'&&PID.charAt(1)=='1')
+          {
+            if(PID.charAt(3)=='0'&&PID.charAt(4)=='C')
+
+              A =  parseInt('0x'+ PID.charAt(6) + PID.charAt(7), 16)
+             
+              B =  parseInt('0x'+ PID.charAt(9) + PID.charAt(10), 16)
+              console.log(A);
+              console.log(B);
+             
+            //console.log(A + B);
+             answer = ((256*A)+B)/4
+     
+             return answer;
+          }
+      return answer;
      }
 
 
-     //capture the
-     extractDataFromSignal(){
-
-
-     }
-
-
-     //Conversion from OBDII to extract the decimal variable
-     convertPID(){
-        //
-        
-     }
-
-
-     sendMsg2(){
+    sendMsg2(){
       
       setTimeout(() => client.write('ATI\r'), 3000);
-      console.log(mydata)
+    //  console.log(mydata)
       this.setState({rpm: mydata});
    }
 
@@ -129,7 +139,7 @@ export default class  mainscreen extends Component {
 
                   <View style={{flexWrap: 'wrap', height: 500, flexDirection: 'row',backgroundColor: '#f3f3f3'}}> 
                   
-                          <Card faultCount = 'RV'systemName =  {this.state.rpm}/>
+                          <Card faultCount = {this.state.rpm} systemName =  {this.state.rpm}/>
                           <Card faultCount = {this.state.coolantTemp} systemName =   {this.state.rpm}/>
                           <Card faultCount = {this.state.engineIntake} systemName = 'Intake (Psi)'/>
                           <Card faultCount = {this.state.engineLoad} systemName = 'Engine Load (%)'/>
@@ -147,8 +157,7 @@ export default class  mainscreen extends Component {
     }
   }
 
-  //<Button color =  'grey' title="Increast" onPress={() => this.setLiveData()}/>
-  //<Button title="SendMsg" onPress={() => this.setState({rpm: ':' + myDisplay})}/> 
+
 
 //Styling for topsheet
 const panelStyles = {
