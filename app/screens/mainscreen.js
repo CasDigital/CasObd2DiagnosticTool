@@ -20,6 +20,7 @@ import Connection from '../screens/connectionScreen';
 import {mydata} from '../screens/connectionScreen';
 import {client} from '../screens/connectionScreen';
 var i = 1;
+var preAnswer = 0;
 //Overview screen displays counts of all the system faults
 export default class  mainscreen extends Component {
 
@@ -52,7 +53,7 @@ export default class  mainscreen extends Component {
 
       componentDidMount(){
 
-          setInterval(() => {this.sendMsg()}, 1000);
+          setInterval(() => {this.sendMsg()}, 100);
       }
                
       componentWillUnmount() {
@@ -62,8 +63,7 @@ export default class  mainscreen extends Component {
     //Send initiation strinng to the ECU
     sendMsg(){
 
-       // setTimeout(() => client.write('010C\r'), 1000);
-        client.write('010C\r');
+       setTimeout(() => client.write('010C\r'), 1000);
         console.log('i wrote something');
         this.setState({rpm: this.extractDataFromSignal(mydata)});        
      }
@@ -91,8 +91,9 @@ export default class  mainscreen extends Component {
              answer = ((256*A)+B)/4
      
              return answer;
+             preAnswer = answer;
           }
-      return answer;
+      return preAnswer;
      }
 
 
